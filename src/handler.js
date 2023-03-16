@@ -129,9 +129,20 @@ const getBookByIdHandler = (request,h) => {
         return {
             status: 'success',
             data: {
-               book:{ 
-                bookId: id
-               },
+               book:{
+                id: book.id,
+                name: book.name,
+                year: book.year,
+                author: book.author,
+                summary: book.summary,
+                publisher:book.publisher,
+                pageCount:book.pageCount,
+                readPage:book.readPage,
+                reading:book.reading,
+                finished:book.finished,
+                insertedAt: book.insertedAt,
+                updatedAt: book.updatedAt
+                },   
             },
         };
     }
@@ -147,7 +158,8 @@ const getBookByIdHandler = (request,h) => {
 const editBookByIdHandler = (request,h) => {
     const {id} = request.params;
 
-    const {name, 
+    const {
+        name, 
         year,
         author,
         summary,
@@ -180,7 +192,6 @@ const editBookByIdHandler = (request,h) => {
     }
 
     if (index !== -1) {
-        const finished = pageCount === readPage;
         
         books[index] = {
             ...books[index],
@@ -191,14 +202,17 @@ const editBookByIdHandler = (request,h) => {
             publisher,
             pageCount,
             readPage,
-            finished,
+            finished: (pageCount === readPage),
             reading,
             updatedAt
         };
 
         const response = h.response({
             status: 'success',
-            message: 'Buku berhasil diperbarui'
+            message: 'Buku berhasil diperbarui',
+            book: {
+                bookId: books[index].id,
+            },          
         });
 
         response.code(200);
